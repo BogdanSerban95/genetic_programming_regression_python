@@ -1,11 +1,12 @@
 import sexpdata as spd
-from s_exp_evaluator import SExpressionEvaluator
 import argparse
+import sys
 from data_holder import DataHolder
+from gentic_algorithm import GeneticAlgorithm
+from tree_expr import TreeExpression
 
 
 def main():
-    exp_eval = SExpressionEvaluator()
     parser = argparse.ArgumentParser(description='Genetic programming.')
     parser.add_argument('-question', help='Question number', type=int, required=True)
     parser.add_argument('-n', type=int)
@@ -13,6 +14,8 @@ def main():
     parser.add_argument('-x', type=str)
     parser.add_argument('-expr', type=str)
     parser.add_argument('-data', type=str)
+    parser.add_argument('-lambda', type=int)
+    parser.add_argument('-time_budget', type=int)
 
     args = parser.parse_args()
     question = args.question
@@ -20,22 +23,24 @@ def main():
     if question == 1:
         x = [float(i) for i in args.x.split(' ')]
         expr = spd.loads(args.expr)
-        print(exp_eval.evaluate(x, expr))
+        tree_exp = TreeExpression().from_s_expression(expr)
+        print(tree_exp.evaluate_expression(x))
     elif question == 2:
-        data_holder = DataHolder()
+        data_holder = DataHolder(args.n, args.m)
         data_holder.load_data(args.data)
         expr = spd.loads(args.expr)
-        print(compute_mse(expr, data_holder.x, data_holder.y, args.m))
+        tree_exp = TreeExpression().from_s_expression(expr)
+        print(data_holder.evaluate_expression(tree_exp))
+    elif question == 3:
+        lmbd = int(get_argument_value('-lambda', sys.argv[1:]))
+        data_holder = DataHolder(args.n, args.m)
+        data_holder.load_data(args.data)
+        ga = GeneticAlgorithm(lmbd, args.n, args.m, 2, 1.3, args.time_budget, data_holder)
+        print(ga.run_ga())
 
 
-def compute_mse(exp, x, y, m):
-    se_sum = 0
-    exp_eval = SExpressionEvaluator()
-    for i in range(m):
-        exp_val = exp_eval.evaluate(x[i], exp)
-        print(exp_val, type(exp_val))
-        se_sum += (y[i] - exp_val) ** 2
-    return se_sum / m
+def get_argument_value(argument, args_list):
+    return args_list[args_list.index(argument) + 1]
 
 
 if __name__ == '__main__':
