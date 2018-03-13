@@ -2,6 +2,7 @@ import sexpdata as sd
 from tree_expr import TreeExpression
 from genetic_algorithm import GeneticAlgorithm
 from data_holder import DataHolder
+import time
 
 # a = sd.loads('(add (max (data 0) (data 1)) 2.1)')
 # x = [1.1, 2.3]
@@ -25,11 +26,11 @@ from data_holder import DataHolder
 
 data = DataHolder(1, 300)
 data.load_data('data/data.txt')
+ga = GeneticAlgorithm(10, 2, 3, 2, 1, 1, 1, data)
+start_time = time.time()
 ind = TreeExpression().random_init(5)
-ind.fitness = data.evaluate_expression(ind)
-print(ind.fitness)
-ind = ind.mutate(0.1)
-ind.fitness = data.evaluate_expression(ind)
-print(ind.fitness)
-
+ind2 = TreeExpression().random_init(5)
+offspring = ga.crossover(ind, ind2)
+print(data.evaluate_expression(offspring))
+print('Elapsed time: {}'.format(time.time() - start_time))
 pass
