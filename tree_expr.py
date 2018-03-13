@@ -1,3 +1,4 @@
+import random as rnd
 import sexpdata as sp
 from math import fabs, sqrt, log2, e
 from expression_generator import ExpressionGenerator as eg
@@ -28,6 +29,16 @@ class TreeExpression(object):
         else:
             self.root = eg.random_terminal()
             self.children = None
+        return self
+
+    def mutate(self, chi):
+        if rnd.uniform(0, 1) < chi:
+            return TreeExpression().random_init(3)
+        elif self.children is None:
+            return self
+        else:
+            child = rnd.randint(0, len(self.children) - 1)
+            self.children[child] = self.children[child].mutate(chi)
         return self
 
     def evaluate_expression(self, x):
