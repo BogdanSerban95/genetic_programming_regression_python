@@ -1,6 +1,7 @@
 from tree_expr import TreeExpression
 import random as rnd
 import copy
+from sys import float_info
 
 
 class GeneticAlgorithm(object):
@@ -22,7 +23,18 @@ class GeneticAlgorithm(object):
             self.population.append(ind)
 
     def selection(self):
-        pass
+        winner = TreeExpression()
+        winner.fitness = float_info.max
+        contestants = []
+        for i in range(self.k):
+            contestant_idx = rnd.randint(0, self.pop_size - 1)
+            contestant = self.population[contestant_idx]
+            if contestant.fitness < winner.fitness:
+                winner = contestant
+                contestants = [winner]
+            elif contestant.fitness == winner.fitness:
+                contestants.append(contestant)
+        return contestants[rnd.randint(0, len(contestants) - 1)]
 
     def crossover(self, ind_x, ind_y):
         # find a common branch

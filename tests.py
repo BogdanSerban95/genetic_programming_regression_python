@@ -24,13 +24,20 @@ import time
 # print(Individual().random_init(self.max_height))
 # s = sd.loads('(min (max 2 3) (log (max 2 2)))')
 
+# ind = TreeExpression().random_init(5)
+# ind2 = TreeExpression().random_init(5)
+# offspring = ga.crossover(ind, ind2)
+# print(data.evaluate_expression(offspring))
+
+start_time = time.time()
 data = DataHolder(1, 300)
 data.load_data('data/data.txt')
 ga = GeneticAlgorithm(10, 2, 3, 2, 1, 1, 1, data)
-start_time = time.time()
-ind = TreeExpression().random_init(5)
-ind2 = TreeExpression().random_init(5)
-offspring = ga.crossover(ind, ind2)
-print(data.evaluate_expression(offspring))
-print('Elapsed time: {}'.format(time.time() - start_time))
+ga.generate_population()
+for i in range(10):
+    print(ga.population[i].fitness)
+print()
+for i in range(10):
+    print(ga.selection().fitness)
+# print('Elapsed time: {}'.format(time.time() - start_time))
 pass
