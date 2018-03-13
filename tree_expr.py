@@ -41,6 +41,12 @@ class TreeExpression(object):
             self.children[child] = self.children[child].mutate(chi)
         return self
 
+    def to_s_expression(self):
+        if self.children is None:
+            return self.root
+        else:
+            return '(' + self.root + ' ' + ' '.join([str(x.to_s_expression()) for x in self.children]) + ')'
+
     def evaluate_expression(self, x):
         if self.children is None:
             return self.root

@@ -7,6 +7,7 @@ import time
 # a = sd.loads('(add (max (data 0) (data 1)) 2.1)')
 # x = [1.1, 2.3]
 # expr = TreeExpression().from_s_expression(a)
+# print(expr.to_s_expression())
 # print(expr.evaluate_expression(x))
 # eval = SExpressionEvaluator()
 # print(eval.evaluate([1,2,3,4], a))
@@ -29,15 +30,25 @@ import time
 # offspring = ga.crossover(ind, ind2)
 # print(data.evaluate_expression(offspring))
 
-start_time = time.time()
+# ga.generate_population()
+# for i in range(10):
+#     print(ga.population[i].fitness)
+# print(ga.best_individual().fitness)
+# for i in range(10):
+#     print(ga.selection().fitness)
+# start_time = time.time()
+import matplotlib.pyplot as plt
+
 data = DataHolder(1, 300)
 data.load_data('data/data.txt')
-ga = GeneticAlgorithm(10, 2, 3, 2, 1, 1, 1, data)
-ga.generate_population()
-for i in range(10):
-    print(ga.population[i].fitness)
-print()
-for i in range(10):
-    print(ga.selection().fitness)
+ga = GeneticAlgorithm(lmbd=100, n=2, m=3, k=2, chi=0.2, max_height=5, time_budget=20, data=data)
+ind = ga.run_ga()
+val = [ind.evaluate_expression(x) for x in data.x]
+print(ind.fitness)
+print(ind.to_s_expression())
+plt.plot(val)
+plt.plot(data.y)
+plt.show()
+# for i in range(10):
 # print('Elapsed time: {}'.format(time.time() - start_time))
 pass

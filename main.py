@@ -35,8 +35,9 @@ def main():
         lmbd = int(get_argument_value('-lambda', sys.argv[1:]))
         data_holder = DataHolder(args.n, args.m)
         data_holder.load_data(args.data)
-        ga = GeneticAlgorithm(lmbd, args.n, args.m, 2, 1.3, args.time_budget, data_holder)
-        print(ga.run_ga())
+        ga = GeneticAlgorithm(lmbd=lmbd, n=args.n, m=args.m, k=2, chi=1.3, max_height=5, time_budget=args.time_budget,
+                              data=data_holder)
+        print(ga.run_ga().to_s_expression())
 
 
 def get_argument_value(argument, args_list):

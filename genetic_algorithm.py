@@ -2,6 +2,7 @@ from tree_expr import TreeExpression
 import random as rnd
 import copy
 from sys import float_info
+import time
 
 
 class GeneticAlgorithm(object):
@@ -17,6 +18,7 @@ class GeneticAlgorithm(object):
         self.time_budget = time_budget
 
     def generate_population(self):
+        self.population = []
         for i in range(self.pop_size):
             ind = TreeExpression().random_init(self.max_height)
             ind.fitness = self.data.evaluate_expression(ind)
@@ -66,5 +68,25 @@ class GeneticAlgorithm(object):
                 common_y.extend(c_y)
         return common_x, common_y
 
+    def best_individual(self):
+        return min(self.population, key=lambda x: x.fitness)
+
     def run_ga(self):
-        pass
+        best_individual = None
+        generations = 0
+        self.generate_population()
+        start_time = time.time()
+        while time.time() - start_time <= self.time_budget:
+            best_individual = self.best_individual()
+            generations += 1
+
+            new_population = [best_individual]
+            for i in range(self.pop_size - 1):
+                parent_x = self.selection()
+                parent_y = self.selection()
+                offspring = self.crossover(parent_x, parent_y)
+                offspring.mutate(self.chi)
+                offspring.fitness = self.data.evaluate_expression(offspring)
+                new_population.append(offspring)
+            self.population = new_population
+        return best_individual
