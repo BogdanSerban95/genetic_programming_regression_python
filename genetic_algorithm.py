@@ -1,4 +1,4 @@
-from individual import Individual
+from tree_expr import TreeExpression
 
 
 class GeneticAlgorithm(object):
@@ -15,9 +15,8 @@ class GeneticAlgorithm(object):
 
     def generate_population(self):
         for i in range(self.pop_size):
-            ind = Individual()
-            ind.random_init(self.max_height)
-            ind.fitness = self.data.evaluate_expression(ind.expr)
+            ind = TreeExpression().random_init(self.max_height)
+            ind.fitness = self.data.evaluate_expression(ind)
             self.population.append(ind)
 
     def selection(self):

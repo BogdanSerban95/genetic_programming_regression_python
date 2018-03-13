@@ -1,3 +1,6 @@
+import sys
+
+
 class DataHolder(object):
     def __init__(self, n, m):
         self.x = []
@@ -14,7 +17,10 @@ class DataHolder(object):
 
     def evaluate_expression(self, expr):
         se_sum = 0
-        for i in range(self.m):
-            exp_val = expr.evaluate_expression(self.x[i])
-            se_sum += (self.y[i] - exp_val) ** 2
-        return se_sum / self.m
+        try:
+            for i in range(self.m):
+                exp_val = expr.evaluate_expression(self.x[i])
+                se_sum += (self.y[i] - exp_val) ** 2
+            return se_sum / self.m
+        except OverflowError:
+            return sys.float_info.max

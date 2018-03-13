@@ -2,7 +2,7 @@ import sexpdata as spd
 import argparse
 import sys
 from data_holder import DataHolder
-from gentic_algorithm import GeneticAlgorithm
+from genetic_algorithm import GeneticAlgorithm
 from tree_expr import TreeExpression
 
 
