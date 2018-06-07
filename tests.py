@@ -41,14 +41,12 @@ import matplotlib.pyplot as plt
 
 data = DataHolder(1, 300)
 data.load_data('data/data.txt')
-ga = GeneticAlgorithm(lmbd=100, n=2, m=3, k=2, chi=0.2, max_height=5, time_budget=20, data=data)
+ga = GeneticAlgorithm(lmbd=1000, n=2, m=3, k=2, chi=0.2, max_height=5, time_budget=1, data=data)
+start_time = time.time()
 ind = ga.run_ga()
-val = [ind.evaluate_expression(x) for x in data.x]
-print(ind.fitness)
-print(ind.to_s_expression())
-plt.plot(val)
-plt.plot(data.y)
-plt.show()
+print('Elapsed time: {}'.format(time.time() - start_time))
+
+# val = [ind.evaluate_expression(x) for x in data.x]
+
 # for i in range(10):
 # print('Elapsed time: {}'.format(time.time() - start_time))
-pass

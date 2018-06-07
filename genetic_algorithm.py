@@ -89,4 +89,5 @@ class GeneticAlgorithm(object):
                 offspring.fitness = self.data.evaluate_expression(offspring)
                 new_population.append(offspring)
             self.population = new_population
+        print("Generation: {}, fitness: {}".format(generations, best_individual.fitness))
         return best_individual
